@@ -1,0 +1,256 @@
+using System;
+
+namespace CasinoGame
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Enter money:");
+            int money = int.Parse(Console.ReadLine());
+
+            TotalCash totalCash = new TotalCash(money);
+            string line;
+            Console.WriteLine("We have two machines: fruit and numbers.\nWrite which one do you want: ");
+            while ((line = Console.ReadLine()) != "end")
+            {
+                
+                string[] splitLine = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                switch (splitLine[0])
+                {       
+                    case "fruit":
+                        MachineType fruitMachine = new MachineType();
+
+                        Console.WriteLine("How much do you want to cash in.");
+
+                        int cashIn = int.Parse(Console.ReadLine());
+
+                        if (cashIn > totalCash.Cash)
+                        {
+                            Console.WriteLine("You don't have enough money.");
+                        }
+                        else
+                        {
+                            totalCash.Cash -= cashIn;
+
+                            Console.WriteLine("How much will you bet.\nBet:");
+
+                            int bet = int.Parse(Console.ReadLine());
+                            if (cashIn < bet)
+                            {
+                                Console.WriteLine("Bet cannot be higher");
+                                break;
+                            }
+                            Console.WriteLine("You play with ''go''.");
+                            Console.WriteLine("To change bet type ''bet''.");
+
+                            while ((line = Console.ReadLine()) != "cash out")
+                            {
+                                splitLine = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                                if (cashIn < bet)
+                                {
+                                    Console.WriteLine("Not enough money");
+                                    break;
+                                }
+                                switch (splitLine[0])
+                                {
+                                    case "bet":
+                                        Console.WriteLine("Change bet!");
+                                        bet = int.Parse(Console.ReadLine());
+                                        break;
+
+                                    case "go":
+                                        cashIn -= bet;
+                                        int win = fruitMachine.fruitMachine(bet);
+                                        cashIn += win;
+
+                                        Console.Write($"Cash: {cashIn} Bet:{bet}\nTotal cash: {totalCash.Cash}");
+                                        Console.WriteLine();
+                                        break;
+
+                                    default: break;
+                                }
+                            }
+                        }
+                        totalCash.Cash += cashIn;
+                        break;
+
+                    case "numbers":
+                        MachineType numMachine = new MachineType();
+
+                        Console.WriteLine("How much do you want to cash in.");
+
+                        cashIn = int.Parse(Console.ReadLine());
+
+                        if (cashIn > totalCash.Cash)
+                        {
+                            Console.WriteLine("You don't have enough money.");
+                        }
+                        else
+                        {
+                            totalCash.Cash -= cashIn;
+
+                            Console.WriteLine("How much will you bet.\nBet:");
+
+                            int bet = int.Parse(Console.ReadLine());
+                            if(cashIn < bet)
+                            {
+                                Console.WriteLine("Bet cannot be higher");
+                                break;
+                            }
+                            Console.WriteLine("You play with ''go''.");
+                            Console.WriteLine("To change bet type ''bet''.");
+
+                            while ((line = Console.ReadLine()) != "cash out")
+                            {
+                                splitLine = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                                if(cashIn < bet)
+                                {
+                                    Console.WriteLine("Not enough money");
+                                    break;
+                                }
+                                switch (splitLine[0])
+                                {
+                                    case "bet":
+                                        Console.WriteLine("Change bet!");
+                                        bet = int.Parse(Console.ReadLine());
+                                        break;
+
+                                    case "go":
+                                        cashIn -= bet;
+                                        int win = numMachine.NumMachine(bet);
+                                        cashIn += win;
+
+                                        Console.Write($"Cash: {cashIn} Bet:{bet}\nTotal cash: {totalCash.Cash}");
+                                        Console.WriteLine();
+                                        break;
+
+                                    default: break;
+                                }
+                            }
+                        }
+                        totalCash.Cash += cashIn;
+                        break;
+                    default:break;
+
+                }
+                Console.WriteLine($"Total money {totalCash.Cash}");
+                Console.WriteLine("Try your luck on another machine or type 'end' to exit");
+            }
+        }
+    }
+    class MachineType
+    {
+        private int moneyIn;
+        
+        public int Money
+        {
+            get { return this.moneyIn; }
+            set
+            {
+                this.moneyIn = value;
+            }
+
+        }
+
+        public void PrintMoney()
+        {
+            Console.WriteLine(this.moneyIn);
+        }
+        enum fruits
+        {
+            bananna =2,
+            apple,
+            cherry
+        }
+
+        public int fruitMachine(int bet)
+        {
+            Random rnd = new Random();
+            int[,] array2d = new int[,]
+            {
+                {rnd.Next(2,5),rnd.Next(2,5),rnd.Next(2,5) },
+                {rnd.Next(2,5), rnd.Next(2,5), rnd.Next(2,5) },
+                {rnd.Next(2,5), rnd.Next(2,5), rnd.Next(2,5) }
+            };
+            bool combination = false;
+            for (int i = 0; i < 3; i++)
+            {
+                bool done = true;
+                for (int j = 0; j < 3; j++)
+                {
+                    if (array2d[i, 0] == array2d[i, 1] && array2d[i, 0] == array2d[i, 2] && done)
+                    {
+                        bet = bet * array2d[i, 0];
+                        combination = true;
+                        done = false;
+                    }
+                    fruits fruit = (fruits)array2d[i, j];
+                    Console.Write(fruit+" ");
+                }
+                Console.WriteLine();
+            }
+            if (combination)
+            {
+                return bet;
+            }
+            else
+            {
+                return 0;
+            }
+
+        }
+        public int NumMachine(int bet)
+        {
+            Random rnd = new Random();
+            int[,] array2d = new int[,]
+            {
+                {rnd.Next(2,5),rnd.Next(2,5),rnd.Next(2,5) },
+                {rnd.Next(2,5), rnd.Next(2,5), rnd.Next(2,5) },
+                {rnd.Next(2,5), rnd.Next(2,5), rnd.Next(2,5) }
+            };
+            bool combination = false;
+            for (int i = 0; i < 3; i++)
+            {
+                bool done = true;
+                for (int j = 0; j < 3; j++)
+                {
+                    if (array2d[i, 0] == array2d[i, 1] && array2d[i, 0] == array2d[i, 2] && done)
+                    {
+                        bet = bet * array2d[i, 0];
+                        combination = true;
+                        done = false;
+                    }
+                    Console.Write($"{array2d[i, j]} ");
+                }
+                Console.WriteLine();
+            }
+            if (combination)
+            {
+                return bet;
+            }
+            else
+            {
+                return 0;
+            }
+            
+        }
+        
+    }
+    class TotalCash
+    {
+        private int totalCash;
+
+        public TotalCash(int cash)
+        {
+            this.totalCash = cash;
+        }
+        public int Cash
+        {
+             get { return this.totalCash; }
+
+            set { this.totalCash = value; }
+        }
+    }
+}
+

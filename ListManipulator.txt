@@ -1,0 +1,192 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace ConsoleApp13
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string text = Console.ReadLine();
+            List<int> list = text.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                .Select(int.Parse)
+                .ToList();
+
+            string line;
+            
+            while((line=Console.ReadLine()) != "end")
+            {
+                string[] commander = line.Split(' ',
+                    StringSplitOptions.RemoveEmptyEntries);
+
+                switch (commander[0])
+                {
+                    case "Add":
+                        int token = int.Parse(commander[1]);
+                        list = Add(list, token);
+                        break;
+
+                    case "Remove":
+                        token = int.Parse(commander[1]);
+                        list = Remove(list, token);
+                        break;
+
+                    case "RemoveAt":
+                        token = int.Parse(commander[1]);
+                        list = RemoveAt(list, token);
+                        break;
+
+                    case "Insert":
+                        token = int.Parse(commander[1]);
+                        int index = int.Parse(commander[2]);
+                        list = Insert(list, token, index);
+                        break;
+
+                    case "Contains":
+                        token = int.Parse(commander[1]);
+                        Contains(list, token);
+                        break;
+
+                    case "PrintEven":
+                        PrintEven(list);
+                        break;
+
+                    case "PrintOdd":
+                        PrintOdd(list);
+                        break;
+
+                    case "GetSum":
+                        GetSum(list);
+                        break;
+
+                    case "Filter":
+                        
+                        token = int.Parse(commander[2]);
+                        Filter(list, commander[1], token);
+                        break;
+
+                    default: Console.WriteLine("Invalid command");break;
+                }
+            }
+            Console.WriteLine(string.Join(" ",list));
+            
+        }
+
+        static List<int> Add(List<int> list,int num)
+        {
+            list.Add(num);
+            return list;
+        }
+        static List<int> Remove(List<int> list, int num)
+        {
+            list.Remove(num);
+            return list;
+        }
+        static List<int> RemoveAt(List<int> list,int num)
+        {
+            list.RemoveAt(num);
+            return list;
+        }
+        static List<int> Insert(List<int> list,int num,int index)
+        {
+            list.Insert(index , num);
+
+            return list;
+        }
+        static void Contains(List<int> list , int num)
+        {
+            if (list.Contains(num))
+            {
+                Console.WriteLine("Yes");
+            }
+            else
+            {
+                Console.WriteLine("Not such number");
+            }
+        }
+
+        static void PrintEven(List<int> list)
+        {
+            for (int i = 0; i < list.Count(); i++)
+            {
+                if(list[i] % 2 == 0)
+                {
+                    Console.Write(list[i] + " ");
+                }
+            }
+            Console.WriteLine();
+        }
+        static void PrintOdd(List<int> list)
+        {
+            for (int i = 0; i < list.Count(); i++)
+            {
+                if (list[i] % 2 != 0)
+                {
+                    Console.Write(list[i] + " ");
+                }
+            }
+            Console.WriteLine();
+        }
+        static void GetSum(List<int> list)
+        {
+            int total = 0;
+
+            for (int i = 0; i < list.Count(); i++)
+            {
+                total += list[i];
+            }
+            Console.WriteLine(total);
+        }
+
+        static void Filter(List<int> list, string symb,int num)
+        {
+            if(symb == "<")
+            {
+                for (int i = 0; i < list.Count(); i++)
+                {
+                    if(list[i] < num)
+                    {
+                        Console.Write(list[i] + " ");
+                    }
+                }
+                Console.WriteLine();
+            }
+            else if(symb == ">")
+            {
+                for (int i = 0; i < list.Count(); i++)
+                {
+                    if (list[i] > num)
+                    {
+                        Console.Write(list[i] + " ");
+                    }
+                }
+                Console.WriteLine();
+            }
+            else if(symb == "<=")
+            {
+                for (int i = 0; i < list.Count(); i++)
+                {
+                    if (list[i] <= num)
+                    {
+                        Console.Write(list[i] + " ");
+                    }
+                }
+                Console.WriteLine();
+            }
+            else if(symb == ">=")
+            {
+                for (int i = 0; i < list.Count(); i++)
+                {
+                    if (list[i] >= num)
+                    {
+                        Console.Write(list[i] + " ");
+                    }
+                }
+                Console.WriteLine();
+            }
+            
+        }
+    }
+}
+
