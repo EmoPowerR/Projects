@@ -159,7 +159,7 @@ namespace CasinoGame
         }
         enum fruits
         {
-            bananna =2,
+            banana =2,
             apple,
             cherry
         }
